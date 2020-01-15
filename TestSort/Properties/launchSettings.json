@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestSort": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
