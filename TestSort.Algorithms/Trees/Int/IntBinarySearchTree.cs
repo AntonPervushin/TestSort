@@ -1,4 +1,4 @@
-﻿namespace TestSort.Trees.Int
+﻿namespace TestSort.Algorithms.Trees.Int
 {
     public class IntBinarySearchTree : BinarySearchTree<int>
     {

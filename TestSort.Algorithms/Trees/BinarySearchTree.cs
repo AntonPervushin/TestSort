@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace TestSort.Trees
+namespace TestSort.Algorithms.Trees
 {
     public class BinarySearchTree<TKey> where TKey : IComparable
     {
@@ -31,7 +32,7 @@ namespace TestSort.Trees
                 return;
             }
 
-            if(searchWithDirection.Direction == TreeNodeDirection.Left)
+            if (searchWithDirection.Direction == TreeNodeDirection.Left)
             {
                 if (searchWithDirection.Parent.Left != null) return;
                 searchWithDirection.Parent.SetLeft(key);
@@ -74,7 +75,6 @@ namespace TestSort.Trees
                 {
                     Transplant(min, min.Right);
                     min.SetRight(node.Right);
-                    min.Right.SetParent(min);
                 }
 
                 Transplant(node, min);
@@ -85,7 +85,7 @@ namespace TestSort.Trees
         public TreeNode<TKey> Min(TreeNode<TKey> node = null)
         {
             var parent = node ?? Root;
-            while(parent.Left != null)
+            while (parent.Left != null)
             {
                 parent = parent.Left;
             }
@@ -110,13 +110,13 @@ namespace TestSort.Trees
 
             var node = searchResult.Node ?? searchResult.Parent;
 
-            if (node == null) return null; 
+            if (node == null) return null;
 
             if (node.Right != null) return Min(node.Right);
 
             var parent = node.Parent;
 
-            while(parent != null && node.Equals(parent.Right))
+            while (parent != null && node.Equals(parent.Right))
             {
                 node = parent;
                 parent = parent.Parent;
@@ -144,6 +144,35 @@ namespace TestSort.Trees
             }
 
             return parent;
+        }
+
+        public void LeftRotation(TKey key)
+        {
+            var node = SearchWithDirection(key).Node;
+            LeftRotation(node);
+        }
+
+        public void RightRotation(TKey key)
+        {
+            var node = SearchWithDirection(key).Node;
+            RightRotation(node);
+        }
+
+        public void LeftRightRotation(TKey key)
+        {
+            var node = SearchWithDirection(key).Node;
+            LeftRightRotation(node);
+        }
+
+        public void RightLeftRotation(TKey key)
+        {
+            var node = SearchWithDirection(key).Node;
+            RightLeftRotation(node);
+        }
+
+        public int Count()
+        {
+            return InorderWalk().Count();
         }
 
         public IEnumerable<TKey> InorderWalk()
@@ -217,7 +246,7 @@ namespace TestSort.Trees
         {
             if (from == null) yield break;
 
-            foreach(var item in InorderWalkFrom(from.Left))
+            foreach (var item in InorderWalkFrom(from.Left))
             {
                 yield return item;
             }
@@ -228,6 +257,64 @@ namespace TestSort.Trees
             {
                 yield return item;
             }
+        }
+
+        private void LeftRotation(TreeNode<TKey> node)
+        {
+            if (node?.Parent == null) return;
+            var parent = node.Parent;
+            var grandParent = parent?.Parent;
+
+            if (grandParent != null)
+            {
+                if (parent.Equals(grandParent.Left))
+                {
+                    grandParent.SetLeft(node);
+                }
+                else
+                {
+                    grandParent.SetRight(node);
+                }
+            }
+
+            var left = node.Left;
+            node.SetLeft(parent);
+            parent.SetRight(left);
+        }
+
+        private void RightRotation(TreeNode<TKey> node)
+        {
+            if (node?.Parent == null) return;
+            var parent = node.Parent;
+            var grandParent = parent?.Parent;
+
+            if (grandParent != null)
+            {
+                if (parent.Equals(grandParent.Left))
+                {
+                    grandParent.SetLeft(node);
+                }
+                else
+                {
+                    grandParent.SetRight(node);
+                }
+            }
+
+            var right = node.Right;
+            node.SetRight(parent);
+            parent.SetLeft(right);
+        }
+
+        private void LeftRightRotation(TreeNode<TKey> node)
+        {
+            LeftRotation(node);
+            RightRotation(node);
+        }
+
+        private void RightLeftRotation(TreeNode<TKey> node)
+        {
+            RightRotation(node);
+            LeftRotation(node);
         }
     }
 }

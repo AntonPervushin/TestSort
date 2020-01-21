@@ -1,4 +1,4 @@
-﻿namespace TestSort.Trees
+﻿namespace TestSort.Algorithms.Trees
 {
     public enum TreeNodeDirection
     {

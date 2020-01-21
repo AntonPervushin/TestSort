@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace TestSort.Trees
+namespace TestSort.Algorithms.Trees
 {
     public class SearchResult<TKey> where TKey : IComparable
     {
         public SearchResult(
-            TreeNode<TKey> parent, 
-            TreeNode<TKey> node, 
+            TreeNode<TKey> parent,
+            TreeNode<TKey> node,
             TreeNodeDirection direction)
         {
             Parent = parent;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestSort.Trees
+namespace TestSort.Algorithms.Trees
 {
     public class TreeNode<TKey> : IEquatable<TreeNode<TKey>>
         where TKey : IComparable
@@ -11,7 +11,7 @@ namespace TestSort.Trees
         public TreeNode<TKey> Right { get; private set; }
 
         public TreeNode(
-            TKey key, 
+            TKey key,
             TreeNode<TKey> parent,
             TreeNode<TKey> left,
             TreeNode<TKey> right)
@@ -24,18 +24,13 @@ namespace TestSort.Trees
 
         public TreeNode(TKey key) : this(key, null, null, null) { }
 
-        public void SetParent(TreeNode<TKey> node)
-        {
-            Parent = node;
-        }
-
         public void SetLeft(TKey key)
         {
             SetLeft(new TreeNode<TKey>(key, this, null, null));
         }
 
-        public void SetLeft(TreeNode<TKey> node) 
-        { 
+        public void SetLeft(TreeNode<TKey> node)
+        {
             Left = node;
             if (node == null) return;
             node.Parent = this;
@@ -55,6 +50,7 @@ namespace TestSort.Trees
 
         public bool Equals(TreeNode<TKey> other)
         {
+            if (ReferenceEquals(this, other)) return true;
             return Key.CompareTo(other.Key) == 0;
         }
 

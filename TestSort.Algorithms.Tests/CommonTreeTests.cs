@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
-using TestSort.Trees.Int;
+using TestSort.Algorithms.Trees.Int;
 
 namespace TestSort.Algorithms.Tests
 {
@@ -107,10 +107,78 @@ namespace TestSort.Algorithms.Tests
             tree.Delete(10);
             var countAfterDelete = tree.InorderWalk().Count();
 
-            Assert.AreEqual(inputData.Length - 1, countAfterDelete);
             Assert.IsTrue(tree.CheckIsSearchTree());
+            Assert.AreEqual(inputData.Length - 1, countAfterDelete);
         }
 
+
+        [Test]
+        public void LeftRotation_IsOk()
+        {
+            var inputData = new int[] { 2, 50, 1, 10, 11, 12, 13, 9, 7, 100 };
+            var tree = ProvideTree(inputData);
+
+            var pivotKey = 11;
+            var pivot = tree.Search(pivotKey);
+            tree.LeftRotation(pivotKey);
+
+            var treeSorted = tree.InorderWalk().ToArray();
+            Assert.IsTrue(tree.CheckIsSearchTree());
+            CollectionAssert.AreEqual(inputData.OrderBy(x => x).ToArray(), treeSorted);
+            Assert.AreEqual(10, pivot.Left.Key);
+            Assert.AreEqual(12, pivot.Right.Key);
+        }
+
+        [Test]
+        public void RightRotation_IsOk()
+        {
+            var inputData = new int[] { 2, 50, 1, 12, 11, 10, 13, 9, 7, 100 };
+            var tree = ProvideTree(inputData);
+
+            var pivotKey = 11;
+            var pivot = tree.Search(pivotKey);
+            tree.RightRotation(pivotKey);
+
+            var treeSorted = tree.InorderWalk().ToArray();
+            Assert.IsTrue(tree.CheckIsSearchTree());
+            CollectionAssert.AreEqual(inputData.OrderBy(x => x).ToArray(), treeSorted);
+            Assert.AreEqual(10, pivot.Left.Key);
+            Assert.AreEqual(12, pivot.Right.Key);
+        }
+
+        [Test]
+        public void LeftRightRotation_IsOk()
+        {
+            var inputData = new int[] { 2, 50, 1, 12, 10, 11, 13, 9, 7, 100 };
+            var tree = ProvideTree(inputData);
+
+            var pivotKey = 11;
+            tree.LeftRightRotation(pivotKey);
+            var pivot = tree.Search(pivotKey);
+
+            var treeSorted = tree.InorderWalk().ToArray();
+            Assert.IsTrue(tree.CheckIsSearchTree());
+            CollectionAssert.AreEqual(inputData.OrderBy(x => x).ToArray(), treeSorted);
+            Assert.AreEqual(10, pivot.Left.Key);
+            Assert.AreEqual(12, pivot.Right.Key);
+        }
+
+        [Test]
+        public void RightLeftRotation_IsOk()
+        {
+            var inputData = new int[] { 2, 50, 1, 10, 12, 11, 13, 9, 7, 100 };
+            var tree = ProvideTree(inputData);
+
+            var pivotKey = 11;
+            tree.RightLeftRotation(pivotKey);
+            var pivot = tree.Search(pivotKey);
+
+            var treeSorted = tree.InorderWalk().ToArray();
+            Assert.IsTrue(tree.CheckIsSearchTree());
+            CollectionAssert.AreEqual(inputData.OrderBy(x => x).ToArray(), treeSorted);
+            Assert.AreEqual(10, pivot.Left.Key);
+            Assert.AreEqual(12, pivot.Right.Key);
+        }
 
         private IntBinarySearchTree ProvideTree(int[] data = null)
         {
